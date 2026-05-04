@@ -8,36 +8,34 @@ function initVideoScrub() {
   const video = document.getElementById('scrollVideo');
   if (!video) return;
 
+  video.pause();
+
+  const setupScrollTrigger = () => {
+    ScrollTrigger.create({
+      trigger: '.split-layout',
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 0.5,
+      onUpdate: (self) => {
+        if (video.readyState >= 2) {
+          const targetTime = self.progress * video.duration;
+          gsap.to(video, {
+            currentTime: targetTime,
+            duration: 0.1,
+            ease: "none",
+            overwrite: true
+          });
+        }
+      }
+    });
+  };
+
   if (video.readyState >= 1) {
     setupScrollTrigger();
   } else {
     video.addEventListener('loadedmetadata', setupScrollTrigger, { once: true });
   }
-
-  function setupScrollTrigger() {
-    ScrollTrigger.getAll().forEach(trigger => {
-      if (trigger.vars.trigger === '.split-layout') {
-        trigger.kill();
-      }
-    });
-
-    gsap.to(video, {
-      currentTime: video.duration || 1,
-      scrollTrigger: {
-        trigger: '.split-layout',
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 1,
-        markers: false,
-        onUpdate: (self) => {
-          if (video.duration) {
-            video.currentTime = self.progress * video.duration;
-          }
-        }
-      }
-    });
-  }
-
+  
   video.addEventListener('error', (e) => {
     console.warn('Video failed to load.', e);
   });
@@ -84,7 +82,9 @@ async function fetchAndRenderMarkdown() {
 }
 
 function animateMarkdownText() {
-  const textElements = document.querySelectorAll('#markdown-content p, #markdown-content li');
+  const textElements = document.querySelectorAll(
+    '#markdown-content p, #markdown-content li'
+  );
   
   textElements.forEach((element) => {
     if (element.textContent.length < 20) return;
@@ -94,16 +94,14 @@ function animateMarkdownText() {
       gsap.from(split.words, {
         scrollTrigger: {
           trigger: element,
-          start: 'top 85%',
-          end: 'top 15%',
-          scrub: false,
-          markers: false,
+          start: 'top 90%',
+          toggleActions: 'play none none reverse'
         },
         opacity: 0,
-        y: 15,
-        stagger: 0.05,
-        duration: 0.5,
-        ease: 'back.out',
+        y: 10,
+        stagger: 0.02,
+        duration: 0.4,
+        ease: 'power1.out',
       });
     } catch (err) {
       console.debug('SplitType animation skipped for element:', element);
