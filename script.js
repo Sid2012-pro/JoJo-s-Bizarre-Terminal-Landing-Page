@@ -14,10 +14,9 @@ function initVideoScrub() {
     ScrollTrigger.create({
       trigger: '.split-layout',
       start: 'top top',
-      end: 'bottom bottom',
+      end: '5000px'
       scrub: 0.5,
       onUpdate: (self) => {
-        end+=2000
         if (video.readyState >= 2) {
           const targetTime = self.progress * video.duration;
           gsap.to(video, {
