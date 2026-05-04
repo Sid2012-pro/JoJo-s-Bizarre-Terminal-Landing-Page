@@ -17,6 +17,7 @@ function initVideoScrub() {
       end: 'bottom bottom',
       scrub: 0.5,
       onUpdate: (self) => {
+        end+=2000
         if (video.readyState >= 2) {
           const targetTime = self.progress * video.duration;
           gsap.to(video, {
