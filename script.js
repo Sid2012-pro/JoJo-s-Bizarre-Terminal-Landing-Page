@@ -14,7 +14,7 @@ function initVideoScrub() {
     ScrollTrigger.create({
       trigger: '.split-layout',
       start: 'top top',
-      end: '2000px'
+      end: '+=2000',
       scrub: 0.5,
       onUpdate: (self) => {
         if (video.readyState >= 2) {
