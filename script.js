@@ -21,7 +21,7 @@ function initVideoScrub() {
           const targetTime = self.progress * video.duration;
           gsap.to(video, {
             currentTime: targetTime,
-            duration: 0.1,
+            duration: 3.4,
             ease: "none",
             overwrite: true
           });
